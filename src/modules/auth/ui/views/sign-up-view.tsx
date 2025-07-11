@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { OctagonAlertIcon } from 'lucide-react';
+import { FaGoogle, FaGithub } from 'react-icons/fa';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import {
@@ -39,6 +40,7 @@ const formSchema = z
 
 export const SignUpView = () => {
   const router = useRouter();
+
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -54,6 +56,7 @@ export const SignUpView = () => {
     authClient.signUp.email(
       {
         name: data.name,
+        callbackURL: '/',
         email: data.email,
         password: data.password,
       },
@@ -61,6 +64,23 @@ export const SignUpView = () => {
         onSuccess() {
           setPending(false);
           router.push('/');
+        },
+        onError({ error }) {
+          setPending(false);
+          setError(error.message);
+        },
+      }
+    );
+  };
+
+  const socialSignIn = (provider: 'google' | 'github') => {
+    setPending(true);
+
+    authClient.signIn.social(
+      { provider, callbackURL: '/' },
+      {
+        onSuccess() {
+          setPending(false);
         },
         onError({ error }) {
           setPending(false);
@@ -188,8 +208,9 @@ export const SignUpView = () => {
                     variant="outline"
                     disabled={pending}
                     className="w-full"
+                    onClick={socialSignIn.bind(null, 'google')}
                   >
-                    Goggle
+                    <FaGoogle />
                   </Button>
 
                   <Button
@@ -197,8 +218,9 @@ export const SignUpView = () => {
                     variant="outline"
                     disabled={pending}
                     className="w-full"
+                    onClick={socialSignIn.bind(null, 'github')}
                   >
-                    Github
+                    <FaGithub />
                   </Button>
                 </div>
 
