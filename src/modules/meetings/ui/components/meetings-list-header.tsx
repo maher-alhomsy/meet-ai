@@ -2,16 +2,35 @@
 
 import { useState } from 'react';
 
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, XCircleIcon } from 'lucide-react';
 
+import StatusFilter from './status-filter';
+import { DEFAULT_PAGE } from '@/constants';
+import AgentIdFilter from './agent-id-filter';
 import { Button } from '@/components/ui/button';
 import NewMeetingDialog from './new-meeting-dialog';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import MeetingsSearchFilter from './meetings-search-filter';
+import useMeetingsFilters from '../../hooks/use-meetings-filters';
 
 const MeetingsListHeader = () => {
+  const [filters, setFilters] = useMeetingsFilters();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const isAnyFilterModifies =
+    !!filters.status || !!filters.search || !!filters.agentId;
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
+  };
+
+  const handleClearFilters = () => {
+    setFilters({
+      search: '',
+      agentId: '',
+      status: null,
+      page: DEFAULT_PAGE,
+    });
   };
 
   return (
@@ -27,7 +46,21 @@ const MeetingsListHeader = () => {
           </Button>
         </div>
 
-        <div className="flex items-center gap-x-2 p-1">TODO: Filters</div>
+        <ScrollArea>
+          <div className="flex items-center gap-x-2 p-1">
+            <MeetingsSearchFilter />
+            <StatusFilter />
+            <AgentIdFilter />
+
+            {isAnyFilterModifies && (
+              <Button variant="outline" onClick={handleClearFilters}>
+                <XCircleIcon /> Clear
+              </Button>
+            )}
+          </div>
+
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
     </>
   );

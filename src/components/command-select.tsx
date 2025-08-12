@@ -36,9 +36,13 @@ const CommandSelect = ({
   placeholdre = 'Select an option',
 }: Props) => {
   const [open, setOpen] = useState(false);
-  console.log(value);
 
   const selectedOption = options.find((op) => op.value === value);
+
+  function handleOpenChange(value: boolean) {
+    onSearch?.('');
+    setOpen(value);
+  }
 
   function handleSelect(value: string) {
     onSelect(value);
@@ -68,8 +72,8 @@ const CommandSelect = ({
 
       <CommandResponsiveDialog
         open={open}
-        onOpenChange={setOpen}
         shouldFilter={!onSearch}
+        onOpenChange={handleOpenChange}
       >
         <CommandInput placeholder="Search ..." onValueChange={onSearch} />
         <CommandList>
