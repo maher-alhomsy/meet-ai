@@ -9,12 +9,12 @@ import {
   DEFAULT_PAGE_SIZE,
 } from '@/constants';
 import { db } from '@/db';
-import { agents, meetings } from '@/db/schema';
-import { createTRPCRouter, protectedProcedure } from '@/trpc/init';
-import { meetingsInsertSchema, meetingsUpdateSchema } from '../schemas';
 import { MeetingStatus } from '../types';
+import { agents, meetings } from '@/db/schema';
 import { streamVideo } from '@/lib/stream-video';
 import { generateAvatarUri } from '@/lib/avatar';
+import { createTRPCRouter, protectedProcedure } from '@/trpc/init';
+import { meetingsInsertSchema, meetingsUpdateSchema } from '../schemas';
 
 export const meetingsRouter = createTRPCRouter({
   generateToken: protectedProcedure.mutation(async ({ ctx }) => {
@@ -151,7 +151,7 @@ export const meetingsRouter = createTRPCRouter({
           },
           settings_override: {
             transcription: {
-              language: 'ar',
+              language: 'en',
               mode: 'auto-on',
               closed_caption_mode: 'auto-on',
             },
