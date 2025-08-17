@@ -10,12 +10,14 @@ import {
 import { format } from 'date-fns';
 import Markdown from 'react-markdown';
 
+import Transcript from './transcript';
+import ChatProvider from './chat-provider';
+import { formatDuration } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import type { MeetingGetOne } from '../../types';
 import GeneratedAvatar from '@/components/generated-avatar';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { formatDuration } from '@/lib/utils';
 
 interface Props {
   data: MeetingGetOne;
@@ -73,6 +75,14 @@ const CompletedSate = ({ data }: Props) => {
               className="w-full rounded-lg"
             />
           </div>
+        </TabsContent>
+
+        <TabsContent value="transcript">
+          <Transcript meetingId={data.id} />
+        </TabsContent>
+
+        <TabsContent value="chat">
+          <ChatProvider meetingId={data.id} meetingName={data.name} />
         </TabsContent>
 
         <TabsContent value="summary">
