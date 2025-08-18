@@ -18,13 +18,17 @@ import {
   MIN_PAGE_SIZE,
   DEFAULT_PAGE_SIZE,
 } from '@/constants';
+import {
+  createTRPCRouter,
+  premiumProcedure,
+  protectedProcedure,
+} from '@/trpc/init';
 import { db } from '@/db';
 import { streamChat } from '@/lib/stream-chat';
 import { streamVideo } from '@/lib/stream-video';
 import { generateAvatarUri } from '@/lib/avatar';
 import { agents, meetings, user } from '@/db/schema';
 import { MeetingStatus, StreamTranscriptItem } from '../types';
-import { createTRPCRouter, protectedProcedure } from '@/trpc/init';
 import { meetingsInsertSchema, meetingsUpdateSchema } from '../schemas';
 
 export const meetingsRouter = createTRPCRouter({
@@ -237,7 +241,7 @@ export const meetingsRouter = createTRPCRouter({
       return { items: data, total: total.count, totalPages };
     }),
 
-  create: protectedProcedure
+  create: premiumProcedure('meetings')
     .input(meetingsInsertSchema)
     .mutation(async ({ ctx, input }) => {
       const [createdMeeting] = await db

@@ -17,6 +17,7 @@ import {
   SidebarGroupContent,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
+import DashboardTrial from './dashboard-trial';
 import { Separator } from '@/components/ui/separator';
 import DashboardUserButton from './dashboard-user-button';
 
@@ -118,6 +119,7 @@ const DashboardSidebar = () => {
       </SidebarContent>
 
       <SidebarFooter className="text-white">
+        <DashboardTrial />
         <DashboardUserButton />
       </SidebarFooter>
     </Sidebar>

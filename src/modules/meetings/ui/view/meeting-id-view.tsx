@@ -48,8 +48,14 @@ const MeetingIdView = ({ meetingId }: Props) => {
         toast.error(error.message);
       },
 
-      onSuccess: () => {
-        queryClient.invalidateQueries(trpc.meetings.getMany.queryOptions({}));
+      onSuccess: async () => {
+        await Promise.all([
+          queryClient.invalidateQueries(
+            trpc.premium.getFreeUsage.queryOptions()
+          ),
+          queryClient.invalidateQueries(trpc.meetings.getMany.queryOptions({})),
+        ]);
+
         router.push('/meetings');
       },
     })

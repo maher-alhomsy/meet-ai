@@ -8,10 +8,14 @@ import {
   MIN_PAGE_SIZE,
   DEFAULT_PAGE_SIZE,
 } from '@/constants';
+import {
+  createTRPCRouter,
+  premiumProcedure,
+  protectedProcedure,
+} from '@/trpc/init';
 import { db } from '@/db';
 import { agents } from '@/db/schema';
 import { agentsInsertSchema, agentsUpdateSchema } from '../schemas';
-import { createTRPCRouter, protectedProcedure } from '@/trpc/init';
 
 export const agentsRouter = createTRPCRouter({
   getOne: protectedProcedure
@@ -80,7 +84,7 @@ export const agentsRouter = createTRPCRouter({
       return { items: data, total: total.count, totalPages };
     }),
 
-  create: protectedProcedure
+  create: premiumProcedure('agents')
     .input(agentsInsertSchema)
     .mutation(async ({ ctx, input }) => {
       const [createdAgent] = await db
