@@ -43,7 +43,7 @@ export const columns: ColumnDef<AgentsGetMany[number]>[] = [
       >
         <VideoIcon className="text-blue-700" />
         {row.original.meetingCount}
-        {row.original.meetingCount === 1 ? 'metting' : 'mettings'}
+        {row.original.meetingCount === 1 ? ' metting' : ' mettings'}
       </Badge>
     ),
   },
